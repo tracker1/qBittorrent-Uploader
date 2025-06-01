@@ -1,0 +1,7 @@
+services:
+  qb-upload:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /root/Downloads:~/Downloads
