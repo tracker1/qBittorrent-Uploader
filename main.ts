@@ -5,6 +5,13 @@ import * as fs from "jsr:@std/fs";
 import * as path from "jsr:@std/path";
 import { QBittorrent } from "npm:@ctrl/qbittorrent";
 
+const options = {
+  baseUrl: Deno.env.get("QB_URL"),
+  username: Deno.env.get("QB_USER"),
+  password: Deno.env.get("QB_PASS"),
+  watchDir: Deno.env.get("WATCH_DIR"),
+};
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // handle to the async file upload processor
@@ -14,13 +21,7 @@ let processor: number = 0;
 const todo: Record<string, string> = {};
 
 // Client configuration to use
-const clientConfig = {
-  baseUrl: Deno.env.get("QB_URL"),
-  username: Deno.env.get("QB_USER"),
-  password: Deno.env.get("QB_PASS"),
-};
-
-const client = new QBittorrent(clientConfig);
+const client = new QBittorrent(options);
 
 /**
  * Get a normalized watch directory (substitutes ~ for home directory)
@@ -106,6 +107,7 @@ async function watchDirectory(directory: string) {
  * Main entry point function
  */
 async function main() {
+  // console.log("Loading: ", options);
   const watchDir = getWatchDir();
 
   await processDirectory(watchDir);
