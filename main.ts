@@ -47,7 +47,8 @@ async function processFile(file: string) {
     }
   } catch (err) {
     console.error("Error processing file:", file, err);
-    await fs.move(file, `${file}.failed`);
+    const ts = new Date().toJSON().replace(/\D/g, "").substring(0, 14);
+    await fs.move(file, `${file}.${ts}.failed`);
   }
 }
 
